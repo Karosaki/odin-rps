@@ -32,8 +32,8 @@ function computerPlay(){
 
     the basic logic for a round of rps
 
-    i.e. -> r beats s, p beat r, 
-
+    i.e. -> r beats s, p beat r,
+    
 */
 
 function singleRound(playerSelection, computerSelection){
@@ -89,7 +89,76 @@ function singleRound(playerSelection, computerSelection){
 }
 
 // Testing the singleRound function
-const playerSelection = "rock";
-const computerSelection = computerPlay();
+// const playerSelection = "rock";
+// const computerSelection = computerPlay();
+// console.log(singleRound(playerSelection, computerSelection));
 
-console.log(singleRound(playerSelection, computerSelection));
+
+/* game function
+    play five rounds (loop 5 times)
+        create a for loop with an iterator
+
+    keep track of score
+        create two variables for each players score, start at 0
+        increment whoever wins by 1
+
+    report winner or loser at the end
+        by comparing what variable is larger
+
+*/
+
+function game(){
+    // variables for scores
+    let playerScore = 0;
+    let computerScore = 0;
+
+    // loop 5 times
+    for (let i = 0; i < 5; i++){
+        console.log(`Round ${i}`);
+    
+        // get user input
+        let playerSelection = window.prompt('Please enter your choice: Rock, paper or scissors');
+        
+        // get computer input
+        let computerSelection = computerPlay();
+
+
+        // result for the game
+        let result = singleRound(playerSelection, computerSelection);
+        
+        // see who won this game
+        if(result.includes('draw') === true){
+            console.log('Draw!, no one gets a point');
+            console.log(`Current score: You: ${playerScore} Computer: ${computerScore}`);
+        }
+
+        else if(result.includes('win') === true){
+            console.log('Win!, you get one point');
+            playerScore++;
+            console.log(`Current score: You: ${playerScore} Computer: ${computerScore}`);
+        }
+
+        else if(result.includes('lose') === true){
+            console.log('Lose!, the computer gets one point');
+            computerScore++;
+            console.log(`Current score: You: ${playerScore} Computer: ${computerScore}`);
+        }
+    } 
+
+    // the game is over, print final scores
+    console.log(`The final scores are in! You scored ${playerScore} points!, the computer
+    scored ${computerScore} points!`);
+
+    // depending on the scores, print who one
+    if(playerScore > computerScore){
+        console.log('You win overall!');
+    }
+
+    else if(computerScore > playerScore){
+        console.log('You lose overall!');
+    }
+
+    else if(computerScore == playerScore){
+        console.log('It\'s a draw! No one wins!');
+    }
+}
