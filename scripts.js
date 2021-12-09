@@ -44,121 +44,151 @@ function singleRound(playerSelection, computerSelection){
     // Rock
     if(playerSelection === 'rock'){
         if(computerSelection === 'Rock'){
-            return 'It is a draw! Rock ties Rock!';
+            return `The computer chose ${computerSelection}, so it is a draw! Rock ties Rock!`;
         }
         
         else if(computerSelection === 'Paper'){
-            return 'You lose! Paper beats Rock!';
+            return `The computer chose ${computerSelection}, so you lose! Paper beats Rock!`;
         }
 
         else if(computerSelection === 'Scissors'){
-            return 'You win! Rock beats Scissors';
+            return `The computer chose ${computerSelection}, so you win! Rock beats Scissors!`;
         }
     }
 
     // Paper
     else if(playerSelection === 'paper'){
         if(computerSelection === 'Paper'){
-            return 'It is a draw! Paper ties Paper!';
+            return `The computer chose ${computerSelection}, so it is a draw! Paper ties Paper!`;
         }
         
         else if(computerSelection === 'Scissors'){
-            return 'You lose! Scissors beats Paper!';
+            return `The computer chose ${computerSelection}, so you lose! Scissors beats Paper!`;
         }
 
         else if(computerSelection === 'Rock'){
-            return 'You win! Paper beats Rock!';
+            return `The computer chose ${computerSelection}, so you win! Paper beats Rock!`;
         }
     }
 
     // Scissors
     else if(playerSelection === 'scissors'){
         if(computerSelection === 'Scissors'){
-            return 'It is a draw! Scissors ties Scissors!';
+            return `The computer chose ${computerSelection}, so it is a draw! Scissors ties Scissors!`;
         }
         
         else if(computerSelection === 'Rock'){
-            return 'You lose! Rock beats Scissors!';
+            return `The computer chose ${computerSelection}, so you lose! Rock beats Scissors!`;
         }
 
         else if(computerSelection === 'Paper'){
-            return 'You win! Scissors beats Paper!';
+            return `The computer chose ${computerSelection}, so you win! Scissors beats Paper!`;
         }
     }
 
 }
 
-// Testing the singleRound function
-// const playerSelection = "rock";
-// const computerSelection = computerPlay();
-// console.log(singleRound(playerSelection, computerSelection));
+// Score variables, keeps track of computer and player scores
 
+let playerScore = 0;
+let computerScore = 0;
 
-/* game function
-    play five rounds (loop 5 times)
-        create a for loop with an iterator
+function scoreChecker(result){
 
-    keep track of score
-        create two variables for each players score, start at 0
-        increment whoever wins by 1
+    // reset final score if has happened
+    finalResultDiv.textContent = '';
+   
+    // see who won this game by checking if win/draw/lose is in the results
+    if(result.includes('draw') === true){
+        //console.log('Draw!, no one gets a point');
+        //console.log(`Current score: You: ${playerScore} Computer: ${computerScore}`);
 
-    report winner or loser at the end
-        by comparing what variable is larger
-
-*/
-
-function game(){
-    // variables for scores
-    let playerScore = 0;
-    let computerScore = 0;
-
-    // loop 5 times
-    for (let i = 0; i < 5; i++){
-        console.log(`Round ${i}`);
-    
-        // get user input
-        let playerSelection = window.prompt('Please enter your choice: Rock, paper or scissors');
-        
-        // get computer input
-        let computerSelection = computerPlay();
-
-
-        // result for the game
-        let result = singleRound(playerSelection, computerSelection);
-        
-        // see who won this game
-        if(result.includes('draw') === true){
-            console.log('Draw!, no one gets a point');
-            console.log(`Current score: You: ${playerScore} Computer: ${computerScore}`);
-        }
-
-        else if(result.includes('win') === true){
-            console.log('Win!, you get one point');
-            playerScore++;
-            console.log(`Current score: You: ${playerScore} Computer: ${computerScore}`);
-        }
-
-        else if(result.includes('lose') === true){
-            console.log('Lose!, the computer gets one point');
-            computerScore++;
-            console.log(`Current score: You: ${playerScore} Computer: ${computerScore}`);
-        }
-    } 
-
-    // the game is over, print final scores
-    console.log(`The final scores are in! You scored ${playerScore} points!, the computer
-    scored ${computerScore} points!`);
-
-    // depending on the scores, print who one
-    if(playerScore > computerScore){
-        console.log('You win overall!');
+        let text1 = `Current score: You: ${playerScore} Computer: ${computerScore}`;
+        console.log(text1);
+        scoreDiv.textContent = text1;
     }
 
-    else if(computerScore > playerScore){
-        console.log('You lose overall!');
+    else if(result.includes('win') === true){
+        console.log('Win!, you get one point');
+        playerScore++;
+        console.log(`Current score: You: ${playerScore} Computer: ${computerScore}`);
+
+        let text1 = `Current score: You: ${playerScore} Computer: ${computerScore}`;
+        scoreDiv.textContent = text1;
     }
 
-    else if(computerScore == playerScore){
-        console.log('It\'s a draw! No one wins!');
+    else if(result.includes('lose') === true){
+        console.log('Lose!, the computer gets one point');
+        computerScore++;
+        console.log(`Current score: You: ${playerScore} Computer: ${computerScore}`);
+
+        let text1 = `Current score: You: ${playerScore} Computer: ${computerScore}`;
+        scoreDiv.textContent = text1;
+    }
+
+
+    // after someone gets to 5 they win
+    if(playerScore === 5 || computerScore === 5 ){
+        finalResultDiv.textContent = `The final scores are in! You scored ${playerScore} points!, the computer scored ${computerScore} points!`;
+
+        if(playerScore > computerScore){
+            console.log('You Win!');
+        }
+        else{
+            console.log('You Lose!');
+        }
+
+        // Reset the scores to 0 as the game is over
+
+        playerScore = 0;   
+        computerScore = 0;
     }
 }
+
+// NEW FOR THE RPS UI -- Event listeners for each of the buttons
+
+const rockBtn = document.querySelector('.rock');
+const paperBtn = document.querySelector('.paper');
+const sciBtn = document.querySelector('.scissors');
+
+// targetting the div
+let resultDiv = document.querySelector('.game-results');
+// targetting inside the div
+let scoreDiv = document.querySelector('.scores');
+// targetting the final result
+let finalResultDiv = document.querySelector('.final-score');
+
+// testing event listeners
+// rock button
+rockBtn.addEventListener('click', function() {
+    let playerSelection = 'rock';
+    let computerSelection = computerPlay();
+
+    let result = singleRound(playerSelection, computerSelection);
+
+    resultDiv.textContent = result;
+    scoreChecker(result);
+});
+
+//paper
+paperBtn.addEventListener('click', function() {
+    let playerSelection = 'paper';
+    let computerSelection = computerPlay();
+
+    let result = singleRound(playerSelection, computerSelection);
+    // update the result into the div
+    resultDiv.textContent = result;
+    scoreChecker(result);
+
+});
+
+//scissors
+sciBtn.addEventListener('click', function() {
+    let playerSelection = 'scissors';
+    let computerSelection = computerPlay();
+
+    let result = singleRound(playerSelection, computerSelection);
+
+    resultDiv.textContent = result;
+    score = scoreChecker(result);
+});
